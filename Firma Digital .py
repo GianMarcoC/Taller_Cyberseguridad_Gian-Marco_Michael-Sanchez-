@@ -2,13 +2,72 @@
 # Firma Digital
 # ============================
 
-# Función para cifrar un texto con César (clave variable)
-def cifrar_cesar(texto, clave):
-    resultado = ""
-    for caracter in texto:
-        if caracter.isalpha():  # Solo letras
-            base = ord('A') if caracter.isupper() else ord('a')
-            resultado += chr((ord(caracter) - base + clave) % 26 + base)
-        else:
-            resultado += caracter  # Mantener espacios y símbolos
-    return resultado
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import hashes
+
+
+# ============================
+# 1. Generar par de claves RSA
+# ============================
+private_key = rsa.generate_private_key(
+    public_exponent=65537,
+    key_size=2048
+)
+public_key = private_key.public_key()
+
+# ============================
+# 2. Mensaje original
+# ============================
+mensaje = b"Este es un mensaje importante"
+
+# ============================
+# 3. Crear firma con la clave privada
+# ============================
+firma = private_key.sign(
+    mensaje,
+    padding.PSS(
+        mgf=padding.MGF1(hashes.SHA256()),
+        salt_length=padding.PSS.MAX_LENGTH
+    ),
+    hashes.SHA256()
+)
+
+print("Firma generada (hex):", firma.hex(), "\n")
+
+# ============================
+# 4. Verificar firma con la clave pública
+# ============================
+print("Verificando mensaje original...")
+try:
+    public_key.verify(
+        firma,
+        mensaje,
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH
+        ),
+        hashes.SHA256()
+    )
+    print("✅ La firma es válida (mensaje íntegro).")
+except:
+    print("❌ La firma no es válida.")
+
+# ============================
+# 5. Probar con un mensaje modificado
+# ============================
+mensaje_modificado = b"Este es un mensaje alterado"
+
+print("\nVerificando mensaje modificado...")
+try:
+    public_key.verify(
+        firma,
+        mensaje_modificado,
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH
+        ),
+        hashes.SHA256()
+    )
+    print("✅ La firma es válida (mensaje íntegro).")
+except:
+    print("❌ La firma no es válida (mensaje fue modificado).")

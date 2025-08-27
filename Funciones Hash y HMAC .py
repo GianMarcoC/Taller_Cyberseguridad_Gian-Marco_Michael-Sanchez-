@@ -3,7 +3,7 @@ import hmac
 import os
 
 # =============================
-# a. FUNCIONES HASH (SHA-256)
+# FUNCIONES HASH (SHA-256)
 # =============================
 
 def hash_text(text):
@@ -25,7 +25,7 @@ def hash_file(filename):
 
 
 # =============================
-# b. DETECCIÓN DE INTEGRIDAD
+# DETECCIÓN DE INTEGRIDAD
 # =============================
 
 def compare_files(file1, file2):
@@ -40,7 +40,7 @@ def compare_files(file1, file2):
 
 
 # =============================
-# c. HMAC con SHA-256
+# HMAC con SHA-256
 # =============================
 
 def generate_hmac(message, key):
@@ -85,7 +85,7 @@ def login_user(password, salt, stored_hash):
 
 
 # =============================
-# DEMOSTRACIÓN
+# Pruebas
 # =============================
 if __name__ == "__main__":
 

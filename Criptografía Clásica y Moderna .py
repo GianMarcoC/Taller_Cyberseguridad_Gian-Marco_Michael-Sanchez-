@@ -1,9 +1,5 @@
 # =====================================================
 # Proyecto: Criptografía Clásica y Moderna en Python
-# Incluye:
-#   A. Cifrado César
-#   B. Cifrado Vigenère
-#   C. Cifrado moderno (Fernet/AES)
 # =====================================================
 
 # ==================
@@ -107,7 +103,7 @@ def descifrar_vigenere(texto_cifrado, clave):
 # =============================
 # C. CIFRADO SIMÉTRICO MODERNO
 # =============================
-# Usaremos la librería "cryptography" con Fernet (basado en AES).
+# Se usa la librería "cryptography" con Fernet (basado en AES).
 # Este esquema genera una clave segura y cifra mensajes de manera robusta.
 
 from cryptography.fernet import Fernet
